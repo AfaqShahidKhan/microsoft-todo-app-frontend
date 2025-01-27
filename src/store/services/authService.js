@@ -36,7 +36,7 @@ export async function login(existingUser) {
 
     return { success: true, user };
   } catch (error) {
-    console.error("Failed to sign up:", error);
+    console.error("Failed to login:", error);
     throw error;
   }
 }
@@ -47,7 +47,7 @@ export async function sendResetPasswordEmail(userData) {
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to sign up:", error);
+    console.error("Failed to fetch:", error);
     throw error;
   }
 }
@@ -58,7 +58,7 @@ export async function resetUserPassword(token, userData) {
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to sign up:", error);
+    console.error("Failed to reset password:", error);
     throw error;
   }
 }
