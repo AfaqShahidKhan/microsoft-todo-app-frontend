@@ -3,3 +3,13 @@
 @tailwind utilities;
 
 
+body {
+    background-image: url('/images/background/bg4.jpg'); /* Path to your bg1 image */
+    background-size: cover; /* Ensures the image covers the entire viewport */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center; /* Centers the image */
+    min-height: 100vh; /* Makes sure the background fills the screen */
+    margin: 0; /* Removes default browser margin */
+    color: var(--foreground); /* Optional: Use the foreground color for text */
+  }
+  

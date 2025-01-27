@@ -2,12 +2,9 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../ui/Input";
-import { signup } from "@/store/services/authService";
-import { FcGoogle } from "react-icons/fc";
-import Link from "next/link";
-
-
-const Signup = () => {
+import { resetUserPassword } from "@/store/services/authService";
+import { useParams } from "next/navigation";
+const ResetPassword = () => {
   const {
     register,
     handleSubmit,
@@ -15,11 +12,15 @@ const Signup = () => {
     formState: { errors },
   } = useForm();
   const [formError, setFormError] = useState("");
+  const { token } = useParams();
+
+  
+  console.log(`token is ${token}`);
 
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const result = await signup(data);
+      const result = await resetUserPassword(token, data);
       return result;
     } catch (error) {
       setFormError(error.message);
@@ -29,18 +30,6 @@ const Signup = () => {
   return (
     <div className="max-w-md mx-auto bg-background p-6 opacity-80 mt-10 rounded-lg">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <Input
-          name="name"
-          {...register("name", { required: "Name is required" })}
-          placeholder="Name"
-          error={errors.name?.message}
-        />
-        <Input
-          name="email"
-          {...register("email", { required: "Email is required" })}
-          placeholder="Email"
-          error={errors.email?.message}
-        />
         <Input
           name="password"
           type="password"
@@ -76,27 +65,11 @@ const Signup = () => {
           type="submit"
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          Sign Up
+          Update Password
         </button>
-        <div className="mt-4 text-center">
-        <p className="text-sm text-white">
-          Already have an account?{" "}
-          <Link href="/login" className="text-blue-500 font-bold hover:underline">Login</Link>
-        </p>
-      </div>
-
-      <div className="mt-6 text-center">
-        <button 
-          type="button" 
-          onClick={() => alert('Continue with Google clicked!')} 
-          className="flex items-center justify-center w-full bg-white text-black text-lg py-2 rounded-md hover:text-blue-600 hover:font-semibold focus:outline-none"
-        >
-          <FcGoogle className="mr-2 size-8" /> Continue with Google
-        </button>
-      </div>
       </form>
     </div>
   );
 };
 
-export default Signup;
+export default ResetPassword;

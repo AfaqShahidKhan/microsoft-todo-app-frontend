@@ -8,8 +8,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: " #212529",
+        foreground: "#ffffff",
+        primary: "#0062CC",
+        secondary: "#5E5E5E",
+        accent: "#FFD700",
+        muted: "#F5F5F5",
+        success: "#28A745",
+        danger: "#DC3545",
+        info: "#17A2B8",
+        warning: "#FFC107",
+        dark: "#212529",
+      },
+      fontFamily: {
+        sans: ["Segoe UI", "Roboto", "Arial", "sans-serif"], 
       },
     },
   },
