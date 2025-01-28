@@ -82,11 +82,11 @@ const LeftSidebar = () => {
         </div>
       )}
 
-      <div className="mt-3">
+      <div className="mt-3 ">
         <Input
           type="text"
           placeholder="Search..."
-          className="bg-charcoal text-foreground"
+          className=" text-foreground ring-1 ring-gray-500 bg-charcoal"
           icon={<LiaSearchSolid />}
         />
       </div>

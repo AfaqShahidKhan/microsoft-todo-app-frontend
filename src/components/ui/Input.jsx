@@ -8,6 +8,7 @@ const Input = ({
   error,
   type = "text",
   icon = null, // Icon passed dynamically as a prop
+  iconPosition = "right", // Default icon position is right
   ...rest
 }) => {
   const handleKeyDown = (event) => {
@@ -18,7 +19,12 @@ const Input = ({
 
   return (
     <div className="relative w-full">
-      {/* Conditionally Render Icon Inside the Input */}
+      {/* Conditionally Render Icon Based on Position */}
+      {icon && iconPosition === "left" && (
+        <span className="absolute inset-y-0 left-3 flex items-center justify-start">
+          {icon}
+        </span>
+      )}
 
       {/* Input Field */}
       <input
@@ -29,11 +35,14 @@ const Input = ({
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         className={`w-full ${
-          icon ? "pl-10" : "pl-4"
-        } pr-4 py-2 rounded-md bg-dark text-white focus:outline-none focus:ring-1 focus:ring-gray-500 ${className}`}
+          icon && iconPosition === "left" ? "pl-10" : "pl-4"
+        } ${
+          icon && iconPosition === "right" ? "pr-10" : "pr-4"
+        } py-2 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-gray-500 ${className}`}
         {...rest}
       />
-      {icon && (
+
+      {icon && iconPosition === "right" && (
         <span className="absolute inset-y-0 right-3 flex items-center justify-end">
           {icon}
         </span>

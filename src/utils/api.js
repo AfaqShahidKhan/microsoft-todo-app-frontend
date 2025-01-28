@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function apiRequest(
@@ -7,8 +9,11 @@ export async function apiRequest(
   headers = {}
 ) {
   try {
+    const token = Cookies.get('token');
+
     const defaultHeaders = {
       "Content-Type": "application/json",
+      ...(token && { "Authorization": `Bearer ${token}` }), 
       ...headers,
     };
 
