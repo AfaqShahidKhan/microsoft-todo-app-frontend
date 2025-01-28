@@ -3,7 +3,8 @@ import Cookies from "js-cookie";
 
 export async function signup(newUser) {
   try {
-    const { token, user } = await apiRequest("/users/signup", "POST", newUser);
+    const { token, data } = await apiRequest("/users/signup", "POST", newUser);
+    const { user } = data;
 
     Cookies.set("token", token, {
       expires: 7,
@@ -21,11 +22,12 @@ export async function signup(newUser) {
 
 export async function login(existingUser) {
   try {
-    const { token, user } = await apiRequest(
+    const { token, data } = await apiRequest(
       "/users/login",
       "POST",
       existingUser
     );
+    const { user } = data;
 
     Cookies.set("token", token, {
       expires: 7,

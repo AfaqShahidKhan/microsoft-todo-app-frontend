@@ -29,7 +29,7 @@ const ForgotPassword = () => {
   return (
     <div className="max-w-md mx-auto bg-background p-6 opacity-80 mt-10 rounded-lg">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <h2 className="text-2xl font-semibold text-center text-white mb-4">
+        <h2 className="text-2xl font-semibold text-center text-foreground mb-4">
           Forgot Password
         </h2>
 
@@ -48,13 +48,13 @@ const ForgotPassword = () => {
 
         <button
           type="submit"
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-foreground bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           Send Reset Link
         </button>
 
         <div className="mt-4 text-center">
-          <p className="text-sm text-white">
+          <p className="text-sm text-foreground">
             Remember your password?{" "}
             <Link
               href="/login"

@@ -19,9 +19,10 @@ export default {
         info: "#17A2B8",
         warning: "#FFC107",
         dark: "#212529",
+        charcoal: "#262626",
       },
       fontFamily: {
-        sans: ["Segoe UI", "Roboto", "Arial", "sans-serif"], 
+        sans: ["Segoe UI", "Roboto", "Arial", "sans-serif"],
       },
     },
   },

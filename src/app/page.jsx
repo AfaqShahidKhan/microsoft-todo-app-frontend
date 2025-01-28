@@ -1,6 +1,9 @@
+import Home from "@/components/Home";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className='text-white'>hi</div>
+    <div className='text-foreground'>
+      <Home/>
+    </div>
   );
 }

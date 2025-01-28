@@ -50,12 +50,12 @@ const Login = () => {
         {formError && <span className="text-red-500 text-sm">{formError}</span>}
         <button
           type="submit"
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-foreground bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           Login
         </button>
         <div className="mt-4 text-center">
-          <p className="text-sm text-white">
+          <p className="text-sm text-foreground">
             Have not any account?{" "}
             <Link
               href="/signup"
@@ -64,7 +64,7 @@ const Login = () => {
               Sign Up
             </Link>
           </p>
-          <p className="text-sm text-white mt-2">
+          <p className="text-sm text-foreground mt-2">
             <Link
               href="/forgot-password"
               className="text-blue-500 font-bold hover:underline"
@@ -78,7 +78,7 @@ const Login = () => {
           <button
             type="button"
             onClick={() => alert("Continue with Google clicked!")}
-            className="flex items-center justify-center w-full bg-white text-black text-lg py-2 rounded-md hover:text-blue-600 hover:font-semibold focus:outline-none"
+            className="flex items-center justify-center w-full bg-foreground text-black text-lg py-2 rounded-md hover:text-blue-600 hover:font-semibold focus:outline-none"
           >
             <FcGoogle className="mr-2 size-8" /> Continue with Google
           </button>
