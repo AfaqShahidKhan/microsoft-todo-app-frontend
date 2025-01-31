@@ -93,7 +93,7 @@ const LeftSidebar = () => {
       <div className="mt-4">
         <ul className="space-y-2">
           <li className="hover:bg-gray-500 p-2 rounded-md">
-            <Link href="/my-day" className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2">
               <span>☀️</span>
               <span>My Day</span>
             </Link>
