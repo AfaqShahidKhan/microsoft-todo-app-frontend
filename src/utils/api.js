@@ -27,7 +27,7 @@ export async function apiRequest(
     }
     const url = `${API_URL}${endpoint}`;
     const response = await fetch(url, options);
-    console.log('this is resons', response);
+    console.log('this is response', response);
 
     if (!response.ok) {
       const errorDetails = await response.json();

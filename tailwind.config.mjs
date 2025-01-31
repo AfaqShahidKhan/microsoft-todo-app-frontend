@@ -16,6 +16,8 @@ export default {
         muted: "#F5F5F5",
         success: "#28A745",
         danger: "#DC3545",
+        grays:"#777777",
+        extragray:"#555555",
         info: "#17A2B8",
         warning: "#FFC107",
         dark: "#212529",

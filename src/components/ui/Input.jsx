@@ -7,8 +7,8 @@ const Input = ({
   className = "",
   error,
   type = "text",
-  icon = null, // Icon passed dynamically as a prop
-  iconPosition = "right", // Default icon position is right
+  icon = null,
+  iconPosition = "right",
   ...rest
 }) => {
   const handleKeyDown = (event) => {

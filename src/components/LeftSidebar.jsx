@@ -33,7 +33,7 @@ const LeftSidebar = () => {
   };
 
   return (
-    <div className="bg-charcoal p-4">
+    <div className="bg-charcoal p-4 text-foreground">
       <div
         className="flex items-center justify-around"
         onClick={toggleDropdown}
@@ -123,7 +123,7 @@ const LeftSidebar = () => {
           </li>
           <li className="hover:bg-gray-500 p-2 rounded-md">
             <Link
-              href="/assigned-to-me"
+              href="/tasks"
               className="flex items-center space-x-2"
             >
               <span>

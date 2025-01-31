@@ -1,5 +1,9 @@
+import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ReduxProvider from "./ReduxProvider";
+import LeftSidebar from "@/components/LeftSidebar";
+import Loading from "./loading";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +26,16 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ReduxProvider>
+          <Suspense fallback={<Loading />}>
+            <div className="flex flex-col md:flex-row h-screen">
+              <div className="flex-[2.5]">
+                <LeftSidebar />
+              </div>
+              <div className="flex-[9.5] relative mx-14">{children}</div>
+            </div>
+          </Suspense>
+        </ReduxProvider>
       </body>
     </html>
   );
