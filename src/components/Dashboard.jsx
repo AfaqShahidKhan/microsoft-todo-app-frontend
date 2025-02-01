@@ -15,7 +15,7 @@ const Dashboard = () => {
         ) : (
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[rgba(54,54,54,0.6)] p-6 rounded-lg text-center shadow-lg">
             <img
-              src="/images/calenderMyDay.png"
+              src="/icons/calenderMyDayIcon.png"
               alt="Calendar Basic Accent Lineal Color icon"
               width="100"
               height="100"

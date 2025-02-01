@@ -30,7 +30,7 @@ const AddTask = ({tasks}) => {
       };
 
   return (
-    <div className="absolute bottom-6 left-0 w-full flex justify-center">
+    <div className="absolute bottom-6 left-0 w-full flex justify-center border border-gray-400 rounded-lg">
         <Input
           type="text"
           placeholder="Enter the Task"

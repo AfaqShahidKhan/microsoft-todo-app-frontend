@@ -2,7 +2,7 @@
 import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { LuArrowDownUp } from "react-icons/lu";
 import Input from "./ui/Input";
 import { LiaSearchSolid } from "react-icons/lia";
@@ -11,10 +11,24 @@ import { FcBullish } from "react-icons/fc";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
 import IconWithTooltip from "./ui/IconWithTooltip ";
 import { GoPlus } from "react-icons/go";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const LeftSidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isPriorityDropdownOpen, setIsPriorityDropdownOpen] = useState(false);
   const [user, setUser] = useState({ name: "", email: "" });
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParms = useSearchParams();
+
+  const createQueryString = useCallback(
+    (name, value) => {
+      const params = new URLSearchParams(searchParms.toString());
+      params.set(name, value);
+      return params.toString();
+    },
+    [searchParms]
+  );
 
   useEffect(() => {
     const userData = Cookies.get("user");
@@ -30,6 +44,10 @@ const LeftSidebar = () => {
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const tooglePriorityDropdown = () => {
+    setIsPriorityDropdownOpen(!isPriorityDropdownOpen);
   };
 
   return (
@@ -99,10 +117,59 @@ const LeftSidebar = () => {
             </Link>
           </li>
           <li className="hover:bg-gray-500 p-2 rounded-md">
-            <Link href="/important" className="flex items-center space-x-2">
-              <span>⭐</span>
-              <span>Important</span>
-            </Link>
+            <div
+              className="flex items-center justify-between"
+              onClick={tooglePriorityDropdown}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && tooglePriorityDropdown()}
+            >
+              <div className="flex items-center space-x-3">
+                <span>⭐</span>
+
+                <div className="text-foreground">
+                  <span>Priority/Important</span>
+                </div>
+              </div>
+
+              <button
+                className="flex items-center text-sm font-medium text-foreground rounded-full"
+                type="button"
+              >
+                <LuArrowDownUp />
+              </button>
+            </div>
+            {isPriorityDropdownOpen && (
+              <div className="absolute mt-2 bg-charcoal divide-y divide-secondary rounded-lg shadow-sm  border border-gray-600 w-52 z-10">
+                <Link
+                  href={`${
+                    "tasks" + "?" + createQueryString("priority", "high")
+                  }`}
+                  className="block px-4 py-2 hover:bg-gray-500"
+                >
+                  <span>🔺</span>
+                  <span>High</span>
+                </Link>
+                <Link
+                  href={`${
+                    "tasks" + "?" + createQueryString("priority", "medium")
+                  }`}
+                  className="block px-4 py-2 hover:bg-gray-500"
+                >
+                  <span>⭕</span>
+                  <span>Medium</span>
+                </Link>
+                <Link
+                  href={`${
+                    "tasks" + "?" + createQueryString("priority", "low")
+                  }`}
+                  className="block px-4 py-2 hover:bg-gray-500"
+                >
+                  <span>🔻</span>
+                  <span>Low</span>
+                </Link>
+              </div>
+            )}
           </li>
           <li className="hover:bg-gray-500 p-2 rounded-md">
             <Link href="/planned" className="flex items-center space-x-2">
@@ -122,10 +189,7 @@ const LeftSidebar = () => {
             </Link>
           </li>
           <li className="hover:bg-gray-500 p-2 rounded-md">
-            <Link
-              href="/tasks"
-              className="flex items-center space-x-2"
-            >
+            <Link href="/tasks" className="flex items-center space-x-2">
               <span>
                 <FcList />
               </span>

@@ -10,14 +10,20 @@ export const getUserId = () => {
   return user.id;
 };
 
-export async function fetchAllTasks(userId, token) {
+export async function fetchAllTasks(page, priority) {
   try {
     const userId = getUserId();
     if (!userId) {
       throw new Error("User ID is required.");
     }
+    let tasks;
+    priority
+      ? (tasks = await apiRequest(
+          `/users/${userId}/tasks?priority=${priority}`
+        ))
+      : (tasks = await apiRequest(`/users/${userId}/tasks`));
+    console.log(`urel ${priority}`);
 
-    const tasks = await apiRequest(`/users/${userId}/tasks`);
     return tasks;
     return tasks;
   } catch (error) {
@@ -32,7 +38,7 @@ export async function addNewTask(taskData) {
     if (!userId) {
       throw new Error("User ID is required.");
     }
-    
+
     taskData.user = userId;
 
     let task = await apiRequest(`/users/${userId}/tasks`, "POST", taskData);

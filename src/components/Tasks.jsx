@@ -1,64 +1,101 @@
-'use client'
+"use client";
 import { useEffect, useState } from "react";
 import { fetchAllTasks } from "@/store/services/taskService";
 import Card from "./ui/Card";
 import TaskDetailsSidebar from "./TaskDetailsSidebar";
 import AddTask from "./AddTask";
 import { useSelector, useDispatch } from "react-redux";
-import { setTasks } from "@/store/slices/taskSlice"; // Import your slice action
+import { setTasks } from "@/store/slices/taskSlice";
+import { useSearchParams } from "next/navigation";
 
 const Tasks = () => {
   const [error, setError] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const tasksData = useSelector((state) => state.task.tasks) || []; // tasks from Redux
+  const [page, setPage] = useState(1);
+  const tasksData = useSelector((state) => state.task.tasks) || [];
   const dispatch = useDispatch();
+  const searchParams = useSearchParams();
+  const priority = searchParams.get("priority");
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const fetchedTasks = await fetchAllTasks();
-        dispatch(setTasks(fetchedTasks.data.data)); // Dispatch to Redux store
+        const fetchedTasks = await fetchAllTasks(page, priority);
+        dispatch(setTasks(fetchedTasks.data.data));
       } catch (error) {
         setError("Error fetching tasks. Please try again later.");
         console.error("Error fetching tasks:", error);
       }
     };
+
     fetchTasks();
-  }, [dispatch]); // Added dispatch as dependency
+  }, [page, priority, dispatch]);
 
-  const handleTaskClick = (task) => {
-    setSelectedTask(task);
-    setIsSidebarOpen(true);
-  };
-
-  const handleCloseSidebar = () => {
-    setIsSidebarOpen(false);
-    setSelectedTask(null);
+  const handleScroll = (e) => {
+    const bottom =
+      e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight;
+    if (bottom) {
+      setPage((prevPage) => prevPage + 1);
+    }
   };
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl text-foreground font-bold mb-4">My Tasks</h1>
+      <h1 className="text-2xl text-foreground font-bold mb-4">
+        {priority ? "Important Tasks" : "My Tasks"}
+      </h1>
       <div className="space-y-2">
         {error ? (
           <p className="text-red-500">{error}</p>
+        ) : tasksData.length > 0 ? (
+          <div
+            className="overflow-y-auto space-y-1"
+            style={{
+              maxHeight: "calc(100vh - 150px)",
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}
+            onScroll={handleScroll}
+          >
+            {tasksData.map((task) => (
+              <Card
+                key={task._id}
+                task={task}
+                onClick={() => {
+                  setSelectedTask(task);
+                  setIsSidebarOpen(true);
+                }}
+              />
+            ))}
+          </div>
         ) : (
-          tasksData &&
-          tasksData.map((task) => (
-            <Card
-              key={task._id}
-              task={task}
-              onClick={() => handleTaskClick(task)}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[rgba(54,54,54,0.6)] p-6 rounded-lg text-center shadow-lg">
+            <img
+              src="/icons/checklistIcon.png"
+              alt="checklist icon"
+              width="100"
+              height="100"
+              title="checklist icon"
+              className="mx-auto mb-4"
             />
-          ))
+            <h3 className="text-foreground text-xl font-semibold mb-2">
+              No tasks yet? Let's get started!
+            </h3>
+            <span className="text-foreground text-xs">
+              Create a task below to get started.
+            </span>
+          </div>
         )}
       </div>
-      <AddTask tasks={tasksData}/>
+      <AddTask tasks={tasksData} />
 
       <TaskDetailsSidebar
         isOpen={isSidebarOpen}
-        onClose={handleCloseSidebar}
+        onClose={() => {
+          setIsSidebarOpen(false);
+          setSelectedTask(null);
+        }}
         task={selectedTask}
       />
     </div>
