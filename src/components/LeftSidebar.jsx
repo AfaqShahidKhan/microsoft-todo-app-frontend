@@ -172,11 +172,11 @@ const LeftSidebar = () => {
             )}
           </li>
           <li className="hover:bg-gray-500 p-2 rounded-md">
-            <Link href="/planned" className="flex items-center space-x-2">
+            <Link href="tasks/overdue" className="flex items-center space-x-2">
               <span>
                 <FcBullish />
               </span>
-              <span>Planned</span>
+              <span>Planned/Overdue</span>
             </Link>
           </li>
           <li className="hover:bg-gray-500 p-2 rounded-md">

@@ -1,7 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const loadMyDayTasks = () => {
+  if (typeof window !== "undefined") {
+    const savedTasks = localStorage.getItem("myDayTasks");
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  }
+  return [];
+};
+
 const initialState = {
-  tasks: [], 
+  tasks: [],
+  myDayTasks: loadMyDayTasks(),
 };
 
 const taskSlice = createSlice({
@@ -10,11 +19,15 @@ const taskSlice = createSlice({
   reducers: {
     setTasks: (state, action) => {
       state.tasks = action.payload;
-      console.log('i am here nooo');
-      
     },
+    setTasksToMyDay: (state, action) => {
+      state.myDayTasks.push(action.payload);
+    },
+    removeTaskFromMyDay: (state, action) => {
+      state.myDayTasks = state.myDayTasks.filter(task => task._id !== action.payload);
+    }
   },
 });
 
-export const { setTasks } = taskSlice.actions;
+export const { setTasks, setTasksToMyDay, removeTaskFromMyDay } = taskSlice.actions;
 export default taskSlice.reducer;

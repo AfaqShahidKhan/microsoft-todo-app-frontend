@@ -4,18 +4,30 @@ import React, { useState } from "react";
 import Input from "./ui/Input";
 import Button from "./ui/Button";
 import { LuAlarmClock } from "react-icons/lu";
-import { LuCalendarClock } from "react-icons/lu";
 import { PiCalculatorLight } from "react-icons/pi";
 import { LuSun } from "react-icons/lu";
+import { TbSunOff } from "react-icons/tb";
 import { MdEventRepeat } from "react-icons/md";
 import { GrAttachment } from "react-icons/gr";
 import { RxCross1 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
+import { removeTaskFromMyDay, setTasksToMyDay } from "@/store/slices/taskSlice";
 
 const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
   const [dueDate, setDueDate] = useState(task?.dueDate || "");
   const [notes, setNotes] = useState(task?.notes || "");
+  const dispatch = useDispatch();
+  const myDayTasks = useSelector((state) => state.task.myDayTasks);
 
   if (!isOpen) return null;
+
+  const handleAddToMyDay = (task) => {
+    dispatch(setTasksToMyDay(task));
+  };
+
+  const handleRemoveFromMyDay = (task) => {
+    dispatch(removeTaskFromMyDay(task._id));
+  };
 
   return (
     <div
@@ -24,7 +36,7 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
     >
       <div
         className="fixed right-0 top-0 h-full w-96 bg-charcoal shadow-lg p-6 z-50"
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the sidebar
+        onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
@@ -37,9 +49,25 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
         </h2>
         <div className="space-y-4">
           <div>
-            <Button size="lg" variant="icon" icon={<LuSun />}>
-              Add to My Day
-            </Button>
+            {myDayTasks.includes(task) ? (
+              <Button
+                size="lg"
+                variant="icon"
+                icon={<TbSunOff />}
+                onClick={() => handleRemoveFromMyDay(task)}
+              >
+                Remove From My Day
+              </Button>
+            ) : (
+              <Button
+                size="lg"
+                variant="icon"
+                icon={<LuSun />}
+                onClick={() => handleAddToMyDay(task)}
+              >
+                Add to My Day
+              </Button>
+            )}
           </div>
           <div className="space-y-1 bg-extragray rounded-md">
             <Button size="lg" variant="icon" icon={<LuAlarmClock />}>
@@ -87,11 +115,6 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
               rows="4" // Adjust number of rows as needed
             ></textarea>
           </div>
-
-          {/* Save Button */}
-          <button className="bg-blue-500 text-chbg-charcoal px-4 py-2 rounded-md hover:bg-blue-600">
-            Save Changes
-          </button>
         </div>
       </div>
     </div>

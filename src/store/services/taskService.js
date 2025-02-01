@@ -25,6 +25,20 @@ export async function fetchAllTasks(page, priority) {
     console.log(`urel ${priority}`);
 
     return tasks;
+  } catch (error) {
+    console.error("Failed to fetch tasks:", error);
+    throw error;
+  }
+}
+
+export async function fetchAllOverDueTasks() {
+  try {
+    const userId = getUserId();
+    if (!userId) {
+      throw new Error("User ID is required.");
+    }
+    const tasks = await apiRequest(`/users/${userId}/tasks/overdue`);
+
     return tasks;
   } catch (error) {
     console.error("Failed to fetch tasks:", error);
@@ -43,6 +57,30 @@ export async function addNewTask(taskData) {
 
     let task = await apiRequest(`/users/${userId}/tasks`, "POST", taskData);
     task = task.data.data;
+    return { success: true, task };
+  } catch (error) {
+    console.error("Failed to reset password:", error);
+    throw error;
+  }
+}
+
+export async function updateTaskData(taskId, taskData) {
+  try {
+    const userId = getUserId();
+    if (!userId) {
+      throw new Error("User ID is required.");
+    }
+
+    taskData.user = userId;
+
+    let task = await apiRequest(
+      `/users/${userId}/tasks/${taskId}`,
+      "PATCH",
+      taskData
+    );
+    task = task.data.data;
+    console.log('i am here and updated task is ', task);
+    
     return { success: true, task };
   } catch (error) {
     console.error("Failed to reset password:", error);

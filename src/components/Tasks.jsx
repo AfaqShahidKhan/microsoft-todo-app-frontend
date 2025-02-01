@@ -1,12 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
-import { fetchAllTasks } from "@/store/services/taskService";
+import {
+  fetchAllOverDueTasks,
+  fetchAllTasks,
+} from "@/store/services/taskService";
 import Card from "./ui/Card";
 import TaskDetailsSidebar from "./TaskDetailsSidebar";
 import AddTask from "./AddTask";
 import { useSelector, useDispatch } from "react-redux";
 import { setTasks } from "@/store/slices/taskSlice";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const Tasks = () => {
   const [error, setError] = useState(null);
@@ -17,11 +20,17 @@ const Tasks = () => {
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const priority = searchParams.get("priority");
+  const pathname = usePathname();
+
+  const isOverdue = pathname.includes("overdue");
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const fetchedTasks = await fetchAllTasks(page, priority);
+        let fetchedTasks;
+        isOverdue
+          ? (fetchedTasks = await fetchAllOverDueTasks())
+          : (fetchedTasks = await fetchAllTasks(page, priority));
         dispatch(setTasks(fetchedTasks.data.data));
       } catch (error) {
         setError("Error fetching tasks. Please try again later.");
