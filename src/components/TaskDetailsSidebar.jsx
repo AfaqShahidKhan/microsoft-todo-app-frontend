@@ -22,6 +22,7 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
   const dispatch = useDispatch();
   const myDayTasks = useSelector((state) => state.task.myDayTasks);
   const [showDueDate, setShowDueDate] = useState(false);
+  const [showReminder, setShowReminder] = useState(false);
   const [showRecurring, setShowRecurring] = useState(false);
   const {
     register,
@@ -88,12 +89,12 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
             defaultValue={task?.title}
             {...register("title")}
             onChange={(e) => setValue("title", e.target.value)}
-            className="my-2 w-[60%] outline-none p-2  border-charcoal bg-charcoal text-foreground rounded-md"
+            className="my-2 max-w-[60%] outline-none p-2  border-charcoal bg-charcoal text-foreground rounded-md"
           />
 
           <div className="space-y-4">
             <div>
-              {myDayTasks.some(t => t._id === task._id) ?  (
+              {myDayTasks.some((t) => t._id === task._id) ? (
                 <Button
                   size="lg"
                   variant="icon"
@@ -115,10 +116,23 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
             </div>
 
             <div className="space-y-1 bg-extragray rounded-md p-2">
-              <Button size="lg" variant="icon" icon={<LuAlarmClock />}>
+              <Button
+                size="lg"
+                variant="icon"
+                icon={<LuAlarmClock />}
+                onClick={() => setShowReminder(!showReminder)}
+              >
                 Remind me
               </Button>
-
+              {showReminder && (
+                <Input
+                  type="datetime-local"
+                  defaultValue={task?.reminder}
+                  onChange={(e) => setValue("reminder", e.target.value)}
+                  {...register("reminder")}
+                  className="mt-2 w-full border border-gray-300 bg-charcoal text-foreground p-2 rounded-md"
+                />
+              )}
               {/* Due Date Input with Toggle */}
               <Button
                 size="lg"
