@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "./ui/Input";
 import Button from "./ui/Button";
 import { LuAlarmClock, LuSun } from "react-icons/lu";
@@ -9,7 +9,11 @@ import { TbSunOff } from "react-icons/tb";
 import { MdEventRepeat } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { removeTaskFromMyDay, setTasksToMyDay } from "@/store/slices/taskSlice";
+import {
+  removeTaskFromMyDay,
+  setTasksToMyDay,
+  updateTaskInStore,
+} from "@/store/slices/taskSlice";
 import { useForm } from "react-hook-form";
 import { updateTaskData } from "@/store/services/taskService";
 import { Toaster, toast } from "react-hot-toast";
@@ -19,13 +23,24 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
   const myDayTasks = useSelector((state) => state.task.myDayTasks);
   const [showDueDate, setShowDueDate] = useState(false);
   const [showRecurring, setShowRecurring] = useState(false);
-
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    if (task) {
+      reset({
+        title: task.title,
+        dueDate: task.dueDate,
+        recurring: task.recurring,
+        description: task.description,
+      });
+    }
+  }, [task, reset]);
 
   if (!isOpen) return null;
 
@@ -41,6 +56,7 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
     try {
       const result = await updateTaskData(task._id, data);
       toast.success("Task updated successfully!");
+      dispatch(updateTaskInStore(result.task));
       return result;
     } catch (error) {
       toast.error("Failed to update task.");
@@ -72,12 +88,12 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
             defaultValue={task?.title}
             {...register("title")}
             onChange={(e) => setValue("title", e.target.value)}
-            className="my-2 w-[80%] outline-none p-2  border-charcoal bg-charcoal text-foreground rounded-md"
+            className="my-2 w-[60%] outline-none p-2  border-charcoal bg-charcoal text-foreground rounded-md"
           />
 
           <div className="space-y-4">
             <div>
-              {myDayTasks.includes(task) ? (
+              {myDayTasks.some(t => t._id === task._id) ?  (
                 <Button
                   size="lg"
                   variant="icon"

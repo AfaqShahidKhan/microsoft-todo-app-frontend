@@ -72,9 +72,13 @@ const Tasks = () => {
                 key={task._id}
                 task={task}
                 onClick={() => {
-                  setSelectedTask(task);
-                  setIsSidebarOpen(true);
+                  setIsSidebarOpen(false); // Close first
+                  setTimeout(() => { // Add slight delay for state update
+                    setSelectedTask(task);
+                    setIsSidebarOpen(true);
+                  }, 50);
                 }}
+                
               />
             ))}
           </div>
