@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
 import taskReducer from "./slices/taskSlice";
+import Cookies from "js-cookie";
 
 const localStorageMiddleware = (store) => (next) => (action) => {
   const result = next(action);
@@ -14,7 +15,7 @@ const localStorageMiddleware = (store) => (next) => (action) => {
   if (myDayTasksActions.includes(action.type)) {
     const { myDayTasks } = store.getState().task;
     if (typeof window !== "undefined") {
-      localStorage.setItem("myDayTasks", JSON.stringify(myDayTasks));
+      Cookies.set("myDayTasks", JSON.stringify(myDayTasks), { expires: 1 });
     }
   }
 

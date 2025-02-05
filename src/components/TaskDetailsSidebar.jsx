@@ -24,6 +24,10 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
   const [showDueDate, setShowDueDate] = useState(false);
   const [showReminder, setShowReminder] = useState(false);
   const [showRecurring, setShowRecurring] = useState(false);
+  const [selectedReminder, setSelectedReminder] = useState(
+    task?.reminder || ""
+  );
+
   const {
     register,
     handleSubmit,
@@ -39,7 +43,9 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
         dueDate: task.dueDate,
         recurring: task.recurring,
         description: task.description,
+        reminder: task.reminder,
       });
+      setSelectedReminder(task.reminder || ""); // Ensure initial reminder state
     }
   }, [task, reset]);
 
@@ -51,6 +57,35 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
 
   const handleRemoveFromMyDay = () => {
     dispatch(removeTaskFromMyDay(task._id));
+  };
+
+
+  const handleReminderChange = (e) => {
+    const value = e.target.value;
+    setSelectedReminder(value); 
+    let reminderDate = new Date(); 
+    if (value === "daily") {
+      reminderDate.setHours(18, 0, 0, 0);
+    } 
+    else if (value === "tomorrow") {
+      reminderDate.setDate(reminderDate.getDate() + 1);
+      reminderDate.setHours(9, 0, 0, 0); // Set time to 9:00 AM
+    } 
+    else if (value === "monday") {
+      const dayOfWeek = reminderDate.getDay(); // Get current day (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+      const daysUntilMonday = (1 - dayOfWeek + 7) % 7 || 7; // Calculate days until next Monday
+      reminderDate.setDate(reminderDate.getDate() + daysUntilMonday);
+      reminderDate.setHours(9, 0, 0, 0); // Set time to 9:00 AM
+    } 
+    // else {
+    //   return; // Do nothing for "None" or "Custom"
+    // }
+  
+    // Format the date for the datetime-local input (YYYY-MM-DDTHH:MM)
+    const formattedDate = reminderDate.toISOString().slice(0, 16);
+  
+    // Update the form value
+    setValue("reminder", formattedDate);
   };
 
   const onSubmit = async (data) => {
@@ -125,13 +160,30 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
                 Remind me
               </Button>
               {showReminder && (
-                <Input
-                  type="datetime-local"
-                  defaultValue={task?.reminder}
-                  onChange={(e) => setValue("reminder", e.target.value)}
-                  {...register("reminder")}
-                  className="mt-2 w-full border border-gray-300 bg-charcoal text-foreground p-2 rounded-md"
-                />
+                <>
+                  <select
+                    value={selectedReminder} // Make it controlled
+                    onChange={handleReminderChange}
+                    className="mt-2 w-full p-2 border border-gray-300 bg-charcoal text-foreground rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  >
+                    <option value="">None</option>
+                    <option value="daily">Daily at 6 PM</option>
+                    <option value="tomorrow">Tomorrow at 9 AM</option>
+                    <option value="monday">Monday at 9 AM</option>
+                    <option value="custom">Set Custom</option>
+                  </select>
+
+                  {selectedReminder === "custom" && (
+                    <input
+                      type="datetime-local"
+                      value={task?.reminder} // Ensure value is controlled here as well
+                      onChange={(e) => setValue("reminder", e.target.value)}
+                      {...register("reminder")}
+                      className="mt-2 w-full border border-gray-300 bg-charcoal text-foreground p-2 rounded-md"
+                    />
+                  )}
+                </>
+
               )}
               {/* Due Date Input with Toggle */}
               <Button

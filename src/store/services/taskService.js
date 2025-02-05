@@ -10,7 +10,7 @@ export const getUserId = () => {
   return user.id;
 };
 
-export async function fetchAllTasks(page, priority) {
+export async function fetchAllTasks(page, priority, title) {
   try {
     const userId = getUserId();
     if (!userId) {
@@ -21,6 +21,8 @@ export async function fetchAllTasks(page, priority) {
       ? (tasks = await apiRequest(
           `/users/${userId}/tasks?priority=${priority}`
         ))
+      : title
+      ? (tasks = await apiRequest(`/users/${userId}/tasks?title=${title}`))
       : (tasks = await apiRequest(`/users/${userId}/tasks`));
     console.log(`urel ${priority}`);
 
@@ -79,8 +81,8 @@ export async function updateTaskData(taskId, taskData) {
       taskData
     );
     task = task.data.data;
-    console.log('i am here and updated task is ', task);
-    
+    console.log("i am here and updated task is ", task);
+
     return { success: true, task };
   } catch (error) {
     console.error("Failed to reset password:", error);

@@ -20,6 +20,8 @@ const Tasks = () => {
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const priority = searchParams.get("priority");
+  const title = searchParams.get("title");
+
   const pathname = usePathname();
 
   const isOverdue = pathname.includes("overdue");
@@ -30,7 +32,7 @@ const Tasks = () => {
         let fetchedTasks;
         isOverdue
           ? (fetchedTasks = await fetchAllOverDueTasks())
-          : (fetchedTasks = await fetchAllTasks(page, priority));
+          : (fetchedTasks = await fetchAllTasks(page, priority, title));
         dispatch(setTasks(fetchedTasks.data.data));
       } catch (error) {
         setError("Error fetching tasks. Please try again later.");
@@ -39,7 +41,7 @@ const Tasks = () => {
     };
 
     fetchTasks();
-  }, [page, priority, dispatch]);
+  }, [page, priority,title, dispatch]);
 
   const handleScroll = (e) => {
     const bottom =
