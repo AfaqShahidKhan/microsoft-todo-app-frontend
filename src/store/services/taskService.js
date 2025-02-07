@@ -48,6 +48,21 @@ export async function fetchAllOverDueTasks() {
   }
 }
 
+export async function fetchAssignToMeTasks() {
+  try {
+    const userId = getUserId();
+    if (!userId) {
+      throw new Error("User ID is required.");
+    }
+    const tasks = await apiRequest(`/users/${userId}/tasks/assignToMe`);
+
+    return tasks;
+  } catch (error) {
+    console.error("Failed to fetch tasks:", error);
+    throw error;
+  }
+}
+
 export async function addNewTask(taskData) {
   try {
     const userId = getUserId();

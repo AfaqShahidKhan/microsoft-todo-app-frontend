@@ -12,6 +12,7 @@ const loadMyDayTasks = () => {
 const initialState = {
   tasks: [],
   myDayTasks: loadMyDayTasks(),
+  assignToMeTasks: [],
 };
 
 const taskSlice = createSlice({
@@ -23,6 +24,9 @@ const taskSlice = createSlice({
     },
     setTasksToMyDay: (state, action) => {
       state.myDayTasks.push(action.payload);
+    },
+    setAssignToMeTasks: (state, action) => {
+      state.assignToMeTasks = action.payload;
     },
     removeTaskFromMyDay: (state, action) => {
       state.myDayTasks = state.myDayTasks.filter(
@@ -45,6 +49,13 @@ const taskSlice = createSlice({
       if (myDayIndex !== -1) {
         state.myDayTasks[myDayIndex] = updatedTask;
       }
+
+      const assignToMeIndex = state.assignToMeTasks.findIndex(
+        (task) => task._id === updatedTask._id
+      );
+      if (assignToMeIndex !== -1) {
+        state.assignToMeTasks[assignToMeIndex] = updatedTask;
+      }
     },
   },
 });
@@ -52,6 +63,7 @@ const taskSlice = createSlice({
 export const {
   setTasks,
   setTasksToMyDay,
+  setAssignToMeTasks,
   removeTaskFromMyDay,
   updateTaskInStore,
 } = taskSlice.actions;

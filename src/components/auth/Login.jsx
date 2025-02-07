@@ -5,6 +5,7 @@ import Input from "../ui/Input";
 import { login } from "@/store/services/authService";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const {
@@ -14,11 +15,12 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const [formError, setFormError] = useState("");
-
+  const router = useRouter();
   const onSubmit = async (data) => {
     console.log(data);
     try {
       const result = await login(data);
+      router.push('/')
       return result;
     } catch (error) {
       setFormError(error.message);

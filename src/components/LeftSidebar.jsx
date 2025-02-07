@@ -19,12 +19,12 @@ import Button from "./ui/Button";
 const LeftSidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isPriorityDropdownOpen, setIsPriorityDropdownOpen] = useState(false);
-  const [user, setUser] = useState({ name: "", email: "" });
+  const [user, setUser] = useState({ name: "", email: "", photo: null });
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const createQueryString = useCallback(
     (name, value) => {
@@ -75,7 +75,7 @@ const LeftSidebar = () => {
       >
         <div className="flex items-center space-x-3">
           <Image
-            src="/images/users/user-1.jpg"
+            src={`http://localhost:5000/images/users/${user.photo}`}
             width={50}
             height={50}
             alt="User Profile"
@@ -197,7 +197,7 @@ const LeftSidebar = () => {
           </li>
           <li className="hover:bg-gray-500 p-2 rounded-md">
             <Link
-              href="/assigned-to-me"
+              href="/assign-to-me"
               className="flex items-center space-x-2"
             >
               <span>🙍‍♂️ </span>

@@ -38,7 +38,7 @@ const Input = ({
           icon && iconPosition === "left" ? "pl-10" : "pl-4"
         } ${
           icon && iconPosition === "right" ? "pr-10" : "pr-4"
-        } py-2 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-gray-500 ${className}`}
+        } py-2 rounded-md text-dark focus:outline-none focus:ring-1 focus:ring-gray-500 ${className}`}
         {...rest}
       />
 

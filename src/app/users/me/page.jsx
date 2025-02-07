@@ -1,11 +1,12 @@
-import React from 'react'
+import UserForm from "@/components/UserForm";
+import React from "react";
 
 const page = () => {
   return (
     <div>
-      Me
+      <UserForm />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

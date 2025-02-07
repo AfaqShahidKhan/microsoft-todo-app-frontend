@@ -105,7 +105,7 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
       <Toaster position="top-center" reverseOrder={false} />
 
       <div
-        className="fixed inset-0 bg-charcoal bg-opacity-50 z-40"
+        className="fixed inset-0 bg-charcoal bg-opacity-50 z-40 overflow-auto"
         onClick={onClose}
       >
         <form
@@ -236,7 +236,7 @@ const TaskDetailsSidebar = ({ isOpen, onClose, task }) => {
                 {...register("description")}
                 placeholder="Add note..."
                 className="mt-1 w-full p-2 border border-gray-300 bg-charcoal text-foreground rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500"
-                rows="4"
+                rows="2"
               ></textarea>
             </div>
           </div>
